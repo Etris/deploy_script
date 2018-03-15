@@ -1,7 +1,8 @@
 import in_defined_path_replacer as replace
 import console_colors as console_color
 import shutil
-from sys import platform
+import os
+main_path = ""
 debug_mode = True
 
 
@@ -13,6 +14,7 @@ class ReadConfigFile:
     def read_config_file(self):
         try:
             file_handler = open(self.config_file_name, 'r')
+            main_path = file_handler.readline().strip('\'')
             for line in file_handler:
                 tmp_list = line.split("\' \'")
                 self.data_container[tmp_list[0].replace('\n', '').strip('\'').strip(' ')] = \
@@ -32,14 +34,14 @@ class RewriteRobots:
         self._rewrite()
 
     def _rewrite(self):
-        fh = open(self.file_path, 'w')
+        fh = open(''.join([main_path, self.file_path]), 'w')
         fh.write(self.file_content)
 
 
 class CopyDir:
     def __init__(self):
         try:
-            shutil.copy2('test sets/test1', 'test sets/test2')
+            shutil.copy2(''.join([main_path, 'test sets/test1']), ''.join([main_path, 'test sets/test2']))
         except PermissionError as e:
             print(console_color.Colors.FAIL +
                   "Config file reading error: {0} - {1}".format(e.errno, e.strerror) + console_color.Colors.ENDC)
@@ -57,6 +59,12 @@ class TaskHandler:
         print(console_color.Colors.OKBLUE + 'Rewrite function test' + console_color.Colors.ENDC)
         if not debug_mode:
             RewriteRobots(file_path)
+
+    @staticmethod
+    def cache_updater(file_path):
+        print(console_color.Colors.OKBLUE + 'Cache update function test' + console_color.Colors.ENDC)
+        if not debug_mode:
+            os.system(''.join([main_path, file_path]))
 
 
 class TaskManager:
@@ -77,6 +85,8 @@ class TaskManager:
             self.task_handler.replace_phrases(val)
         elif str(key) == 'robots':
             self.task_handler.rewrite_robots(val)
+        elif str(key) == 'cache':
+            self.task_handler.cache_updater(val)
         else:
             print(console_color.Colors.FAIL + "There is not matching function!" + console_color.Colors.ENDC)
 
