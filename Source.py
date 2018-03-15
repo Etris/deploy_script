@@ -43,7 +43,7 @@ class RewriteRobots:
 class CopyDir:
     def __init__(self):
         try:
-            shutil.copy2(''.join([main_path, 'test sets/test1']), ''.join([main_path, 'test sets/test2']))
+            shutil.copy2(''.join([main_path, '/html-beta']), ''.join([main_path, '/html']))
         except PermissionError as e:
             print(console_color.Colors.FAIL +
                   "Config file reading error: {0} - {1}".format(e.errno, e.strerror) + console_color.Colors.ENDC)
@@ -66,7 +66,7 @@ class TaskHandler:
     def cache_updater(file_path):
         print(console_color.Colors.OKBLUE + 'Cache update function test' + console_color.Colors.ENDC)
         if not debug_mode:
-            os.system(''.join([main_path, file_path]))
+            os.system(file_path)
 
 
 class TaskManager:
