@@ -16,6 +16,8 @@ class ReadConfigFile:
             file_handler = open(self.config_file_name, 'r')
             main_path = file_handler.readline().strip('\'')
             for line in file_handler:
+                if '#' in line:
+                    continue
                 tmp_list = line.split("\' \'")
                 self.data_container[tmp_list[0].replace('\n', '').strip('\'').strip(' ')] = \
                     tmp_list[1].replace('\n', '').strip('\'').strip(' ')
