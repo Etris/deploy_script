@@ -110,4 +110,5 @@ def main(input_name):
 
 
 if __name__ == "__main__":
-    main("test dir/main.config")
+    import sys
+    main((sys.argv[1]))
